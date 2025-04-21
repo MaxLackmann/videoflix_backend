@@ -1,0 +1,63 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.p~ 
+*.log
+
+# Virtualenv
+env/
+venv/
+ENV/
+.venv/
+
+# Django stuff
+*.sqlite3
+*.db
+*.db-journal
+media/
+staticfiles/
+*.pot
+*.pyc
+*.mo
+
+# VSCode / PyCharm
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Celery
+celerybeat-schedule
+celerybeat.pid
+
+# Redis dump (falls auf lokalem System generiert)
+dump.rdb
+
+# Pip environment
+pip-log.txt
+
+# dotenv (falls genutzt)
+.env
+
+# Migration Cache
+*.pyc
+__pycache__/
+
+# pytest
+.pytest_cache/
+htmlcov/
+
+# Coverage reports
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+
+# Git
+*.orig
