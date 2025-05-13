@@ -1,5 +1,5 @@
 """
-URL configuration for videoflix project.
+URL configuration for videoflix_backend project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.2/topics/http/urls/
@@ -23,5 +23,6 @@ import debug_toolbar
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

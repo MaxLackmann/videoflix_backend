@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,16 +21,15 @@ MEDIA_URL = '/media/'
 
 
 SECRET_KEY = 'django-insecure-5x6%*co++lk$f19$aj^+ex$b*mlx581m&&b3ax%hfvvv&7ns58'
-
-DEBUG = True
+DEBUG = config("DEBUG", cast=bool)
 
 ALLOWED_HOSTS = []
 
-CACHE_TTL = 60 * 15
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200'
+]
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/staticfiles')
-
-IMPORT_EXPORT_USE_TRANSACTIONS = True
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,10 +44,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'debug_toolbar',
     'import_export',
+    'user',
+    'mailing',
 ]
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,6 +59,24 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "videoflix",
+        "USER": "max",
+        "PASSWORD": "test123",
+        "HOST": "2.59.133.122",
+        "PORT": "5432",
+    }
+}
 
 CACHES = {
     "default": {
@@ -73,12 +94,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_BACKEND = "redis://:foobared@2.59.133.122:6379/0"
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
-
-ROOT_URLCONF = 'videoflix.urls'
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -95,14 +110,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'videoflix.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+ROOT_URLCONF = 'videoflix_backend.urls'
+WSGI_APPLICATION = 'videoflix_backend.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,9 +140,26 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+CACHE_TTL = 60 * 15
+
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
+AUTH_USER_MODEL = 'user.CustomUser'
+
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': [
-    #     'rest_framework.authentication.TokenAuthentication',
-    # ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+    ],
 }
+
