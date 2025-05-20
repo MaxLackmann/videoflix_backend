@@ -12,7 +12,6 @@ class CustomUserAdmin(admin.ModelAdmin):
             'individual data',
             {
                 'fields': (
-                    'custom',
                     'phone',
                     'address',
                 )
